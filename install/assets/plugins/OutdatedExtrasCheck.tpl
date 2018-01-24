@@ -76,7 +76,7 @@ $output .= '<div class="widget-wrapper alert alert-warning"><i class="fa fa-excl
 		}
 	}
 } 
-//end check ditto
+//end check Multitv
 	
 if($e->name == 'OnManagerWelcomePrerender') {
 $out = $output;
