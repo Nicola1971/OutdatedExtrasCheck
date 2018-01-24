@@ -1,8 +1,7 @@
-//<?php
 /**
  * OutdatedExtrasCheck
  *
- * Check Outdated critical extras not compatible with EVO 1.4.0
+ * Check for Outdated critical extras not compatible with EVO 1.4.0
  *
  * @category	plugin
  * @version     1.4.0 
@@ -10,7 +9,7 @@
  * @package     evo
  * @author      Author: Nicola Lambathakis
  * @internal    @events OnManagerWelcomeHome
- * @internal    @properties &wdgVisibility=Show widget for:;menu;All,AdminOnly,AdminExcluded,ThisRoleOnly,ThisUserOnly;All &ThisRole=Run only for this role:;string;;;(role id) &ThisUser=Run only for this user:;string;;;(username) &wdgTitle= Widget Title:;string;EVO Outdated Extras Check &wdgicon= widget icon:;string;fa-warning &wdgposition=widget position:;text;0 &wdgsizex=widget width:;list;12,6,4,3;12 &DittoVersion=Min Ditto version:;string;2.1.3 &MtvVersion=Min multiTV version:;string;2.0.12
+ * @internal    @properties &wdgVisibility=Show widget for:;menu;All,AdminOnly,AdminExcluded,ThisRoleOnly,ThisUserOnly;All &ThisRole=Run only for this role:;string;;;(role id) &ThisUser=Run only for this user:;string;;;(username) &DittoVersion=Min Ditto version:;string;2.1.3 &MtvVersion=Min multiTV version:;string;2.0.12
  * @internal    @modx_category Manager and Admin
  * @internal    @installset base
  * @internal    @disabled 0
@@ -37,8 +36,16 @@ if($modx->hasPermission('edit_plugin')) {
 $button_pl_config = '<a data-toggle="tooltip" href="javascript:;" title="' . $_lang["settings_config"] . '" class="text-muted pull-right" onclick="parent.modx.popup({url:\''. MODX_MANAGER_URL.'?a=102&id='.$pluginid.'&tab=1\',title1:\'' . $_lang["settings_config"] . '\',icon:\'fa-cog\',iframe:\'iframe\',selector2:\'#tabConfig\',position:\'center center\',width:\'80%\',height:\'80%\',hide:0,hover:0,overlay:1,overlayclose:1})" ><i class="fa fa-cog fa-spin-hover" style="color:#FFFFFF;"></i> </a>';
 }
 $modx->setPlaceholder('button_pl_config', $button_pl_config);
+//plugin lang
+$_oec_lang = array();
+$plugin_path = $modx->config['base_path'] . "assets/plugins/extrascheck/";
+include($plugin_path . 'lang/english.php');
+if (file_exists($plugin_path . 'lang/' . $modx->config['manager_language'] . '.php')) {
+include($plugin_path . 'lang/' . $modx->config['manager_language'] . '.php');
+}
 //run the plugin
-global $modx;
+// get globals
+global $modx,$_lang;
 //function to extract snippet version from description <strong></strong> tags 
 if (!function_exists('getver')) {
 function getver($string, $tag)
@@ -70,7 +77,7 @@ while( $row = $modx->db->getRow( $CheckDitto ) ) {
 $curr_ditto_version = getver($row['description'],"strong");
 //check snippet version and return an alert if outdated
 if ($curr_ditto_version < $minDittoVersion){
-$output .= '<div class="widget-wrapper alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>' . $row['name'] . '</b> snippet (version ' . $curr_ditto_version . ') is <b>outdated</b> and no more compatible with <b>Evolution '.$EVOversion.'.</b>. Please update <b>' . $row['name'] . '</b> to the latest version (min required '.$minDittoVersion.') from <a target="main" href="index.php?a=112&id='.$ExtrasID.'">Extras</a> Module or move to <b>DocLister</b></div>';
+$output .= '<div class="widget-wrapper alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>' . $row['name'] . '</b> '.$_lang["snippet"].' (version ' . $curr_ditto_version . ') '.$_oec_lang['isoutdated'].' <b>Evolution '.$EVOversion.'</b>. '.$_oec_lang['please_update'].' <b>' . $row['name'] . '</b> '.$_oec_lang["to_latest"].' ('.$_oec_lang['min _required'].' '.$minDittoVersion.') '.$_oec_lang['from'].' <a target="main" href="index.php?a=112&id='.$ExtrasID.'">'.$_oec_lang['extras_module'].'</a> '.$_oec_lang['or_move_to'].' <b>DocLister</b></div>';
 		}
 	}
 } 
@@ -87,7 +94,7 @@ while( $row = $modx->db->getRow( $CheckMtv ) ) {
 $curr_mtv_version = getver($row['description'],"strong");
 //check snippet version and return an alert if outdated
 if ($curr_mtv_version < $minMtvVersion){
-$output .= '<div class="widget-wrapper alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>' . $row['name'] . '</b> snippet (version ' . $curr_mtv_version . ') is <b>outdated</b> and no more compatible with <b>Evolution '.$EVOversion.'.</b>. Please update <b>' . $row['name'] . '</b> to the latest version (min required '.$minMtvVersion.') from <a target="main" href="index.php?a=112&id='.$ExtrasID.'">Extras</a> Module</div>';
+$output .= '<div class="widget-wrapper alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>' . $row['name'] . '</b> '.$_lang["snippet"].' (version ' . $curr_mtv_version . ') '.$_oec_lang['isoutdated'].' <b>Evolution '.$EVOversion.'</b>. '.$_oec_lang['please_update'].' <b>' . $row['name'] . '</b> '.$_oec_lang["to_latest"].' ('.$_oec_lang['min _required'].' '.$minMtvVersion.') '.$_oec_lang['from'].' <a target="main" href="index.php?a=112&id='.$ExtrasID.'">'.$_oec_lang['extras_module'].'</a></div>';
 		}
 	}
 } 
@@ -95,13 +102,14 @@ $output .= '<div class="widget-wrapper alert alert-warning"><i class="fa fa-excl
 if($output != ''){
 if($e->name == 'OnManagerWelcomeHome') {
 $out = $output;
+$wdgTitle = 'EVO '.$EVOversion.' - '.$_oec_lang['title'].'';
 $widgets['xtraCheck'] = array(
-				'menuindex' =>''.$wdgposition.'',
+				'menuindex' =>'0',
 				'id' => 'xtraCheck'.$pluginid.'',
-				'cols' => 'col-md-'.$wdgsizex.'',
+				'cols' => 'col-md-12',
                 'headAttr' => 'style="background-color:#B60205; color:#FFFFFF;"',
 				'bodyAttr' => 'style="background-color:#FFFFFF; color:#24292E;"',
-				'icon' => ''.$wdgicon.'',
+				'icon' => 'fa-warning',
 				'title' => ''.$wdgTitle.' '.$button_pl_config.'',
 				'body' => '<div class="card-body">'.$out.'</div>',
 				'hide' => '0'
