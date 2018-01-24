@@ -1,5 +1,5 @@
 /**
- * OutdatedExtrasCheck-widget
+ * OutdatedExtrasCheck
  *
  * Check Outdated bundled extras
  *
