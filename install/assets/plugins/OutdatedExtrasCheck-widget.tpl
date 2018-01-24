@@ -1,11 +1,11 @@
 /**
  * OutdatedExtrasCheck
  *
- * Check Outdated bundled extras
+ * Check Outdated bundled extras for EVO 1.4.0
  *
  * @author      Author: Nicola Lambathakis http://www.tattoocms.it/
  * @category	plugin
- * @version     0.1
+ * @version     1.4.0 
  * @internal    @events OnManagerWelcomeHome
  * @internal	@modx_category Manager
  * @license 	http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
