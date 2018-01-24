@@ -7,7 +7,7 @@
  * @category	plugin
  * @version     1.4.0 
  * @internal    @events OnManagerWelcomeHome
- * @internal	@modx_category Manager
+ * @internal	@modx_category Admin
  * @license 	http://www.gnu.org/copyleft/gpl.html GNU Public License (GPL)
  * @internal    @properties &wdgVisibility=Show widget for:;menu;All,AdminOnly,AdminExcluded,ThisRoleOnly,ThisUserOnly;All &ThisRole=Run only for this role:;string;;;(role id) &ThisUser=Run only for this user:;string;;;(username) &wdgTitle= Widget Title:;string;EVO Outdated Extras Check  &wdgicon= widget icon:;string;fa-warning &wdgposition=widget position:;text;1 &wdgsizex=widget width:;list;12,6,4,3;12 &DittoVersion=Min Ditto version:;string;2.1.3 &MtvVersion=Min multiTV version:;string;2.0.12
  * @internal @installset base, sample
