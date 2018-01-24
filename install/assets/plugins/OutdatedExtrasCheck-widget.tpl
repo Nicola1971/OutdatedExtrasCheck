@@ -50,6 +50,13 @@ return $text[1];
 $e = &$modx->Event;
 $EVOversion = $modx->config['settings_version'];
 $output = '';
+//get extras module id for the link
+$modtable = $modx->getFullTableName('site_modules');
+$getExtra = $modx->db->select( "id, name", $modtable, "name='Extras'" );
+while( $row = $modx->db->getRow( $getExtra ) ) {
+$ExtrasID = $row['id'];
+}
+//get site snippets table
 $table = $modx->getFullTableName('site_snippets');
 //check ditto
 //get min version from config
@@ -62,7 +69,7 @@ while( $row = $modx->db->getRow( $CheckDitto ) ) {
 $curr_ditto_version = getver($row['description'],"strong");
 //check snippet version and return an alert if outdated
 if ($curr_ditto_version < $minDittoVersion){
-$output .= '<div class="widget-wrapper alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>' . $row['name'] . '</b> snippet (version ' . $curr_ditto_version . ') is <b>outdated</b> and no more compatible with <b>Evolution '.$EVOversion.'.</b>. Please update <b>' . $row['name'] . '</b> to the latest version (min required '.$minDittoVersion.') from <a href="index.php?a=112&id=2">Extras</a> Module or move to <b>DocLister</b></div>';
+$output .= '<div class="widget-wrapper alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>' . $row['name'] . '</b> snippet (version ' . $curr_ditto_version . ') is <b>outdated</b> and no more compatible with <b>Evolution '.$EVOversion.'.</b>. Please update <b>' . $row['name'] . '</b> to the latest version (min required '.$minDittoVersion.') from <a href="index.php?a=112&id='.$ExtrasID.'">Extras</a> Module or move to <b>DocLister</b></div>';
 		}
 	}
 } 
@@ -79,7 +86,7 @@ while( $row = $modx->db->getRow( $CheckMtv ) ) {
 $curr_mtv_version = getver($row['description'],"strong");
 //check snippet version and return an alert if outdated
 if ($curr_mtv_version < $minMtvVersion){
-$output .= '<div class="widget-wrapper alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>' . $row['name'] . '</b> snippet (version ' . $curr_mtv_version . ') is <b>outdated</b> and no more compatible with <b>Evolution '.$EVOversion.'.</b>. Please update <b>' . $row['name'] . '</b> to the latest version (min required '.$minMtvVersion.') from <a href="index.php?a=112&id=2">Extras</a> Module</div>';
+$output .= '<div class="widget-wrapper alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <b>' . $row['name'] . '</b> snippet (version ' . $curr_mtv_version . ') is <b>outdated</b> and no more compatible with <b>Evolution '.$EVOversion.'.</b>. Please update <b>' . $row['name'] . '</b> to the latest version (min required '.$minMtvVersion.') from <a href="index.php?a=112&id='.$ExtrasID.'">Extras</a> Module</div>';
 		}
 	}
 } 
