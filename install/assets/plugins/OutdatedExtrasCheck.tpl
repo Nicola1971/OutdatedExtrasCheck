@@ -64,7 +64,7 @@ $getExtra = $modx->db->select( "id, name", $modtable, "name='Extras'" );
 while( $row = $modx->db->getRow( $getExtra ) ) {
 $ExtrasID = $row['id'];
 }
-//check outdate files
+//check outdated files
 //ajax index
 $indexajax = "../index-ajax.php";
 if (file_exists($indexajax)){
